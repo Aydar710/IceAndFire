@@ -11,6 +11,6 @@ class ServiceModule {
 
     @Provides
     @Singleton
-    fun provideIceAndFireService(retrofit: Retrofit) =
+    fun provideIceAndFireService(retrofit: Retrofit) : IceAndFireService =
         retrofit.create(IceAndFireService::class.java)
 }

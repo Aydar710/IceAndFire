@@ -20,13 +20,13 @@ class NetModule {
         val okHttpClient = OkHttpClient.Builder()
             .addNetworkInterceptor(StethoInterceptor())
 
-        okHttpClient.interceptors().add(Interceptor { chain ->
+        /*okHttpClient.interceptors().add(Interceptor { chain ->
             var request = chain.request()
             val url = request.url().newBuilder()
                 .build()
             request = request.newBuilder().url(url).build()
             chain.proceed(request)
-        })
+        })*/
 
         return okHttpClient.build()
     }

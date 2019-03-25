@@ -13,6 +13,9 @@ import android.view.ViewGroup
 import com.example.iceandfire.R
 import com.example.iceandfire.di.component.DaggerAdapterComponent
 import com.example.iceandfire.di.component.DaggerRepositoryComponent
+import com.example.iceandfire.di.module.NetModule
+import com.example.iceandfire.di.module.RepositoryModule
+import com.example.iceandfire.di.module.ServiceModule
 import com.example.iceandfire.pojo.CharacterResponse
 import com.example.iceandfire.viewModel.CharacterListViewModel
 
@@ -29,13 +32,19 @@ class CharacterListFragment : Fragment() {
         val adapter = DaggerAdapterComponent.create().getCharacterListAdapter()
         rvCharacters.adapter = adapter
 
-        val repository = DaggerRepositoryComponent.create().getRepository()
+        /*val repository = DaggerRepositoryComponent.builder()
+            .repositoryModule(RepositoryModule())
+            .netModule(NetModule())
+            .serviceModule(ServiceModule())
+            .build().getRepository()*/
 
         viewModel = ViewModelProviders.of(this).get(CharacterListViewModel::class.java)
 
-        /*viewModel?.characterListLiveData?.observe(this, Observer<List<CharacterResponse>> {
-            adapter.submitList(it)
-        })*/
+        viewModel?.charactersLiveData?.observe(this, Observer<CharacterResponse> {
+            val list = mutableListOf<CharacterResponse>()
+            it?.let { it1 -> list.add(it1) }
+            adapter.submitList(list)
+        })
         return view
     }
 }
