@@ -1,8 +1,6 @@
 package com.example.iceandfire.di.component
 
 import com.example.iceandfire.di.module.RepositoryModule
-import com.example.iceandfire.repositories.IceAndFireRepository
-import com.example.iceandfire.repositories.IceAndFireService
 import com.example.iceandfire.ui.CharacterListFragment
 import com.example.iceandfire.ui.DetailsFragment
 import dagger.Component
