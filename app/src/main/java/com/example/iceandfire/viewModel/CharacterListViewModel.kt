@@ -15,24 +15,20 @@ import retrofit2.Retrofit
 
 class CharacterListViewModel : ViewModel() {
 
-    //private var repository : IceAndFireRepository? = null
+    private var repository: IceAndFireRepository? = null
 
     /*init {
         repository = DaggerRepositoryComponent.create().getRepository()
     }*/
 
-    private var charactersFlowable: Flowable<CharacterResponse> = loadCharacters()!!
+    private var charactersFlowable: Flowable<CharacterResponse> = loadCharacters()
     var charactersLiveData =
         LiveDataReactiveStreams.fromPublisher(charactersFlowable)
 
-    var characterListLiveData: MutableLiveData<List<CharacterResponse>> = MutableLiveData()
+    private fun loadCharacters(): Flowable<CharacterResponse> =
+        repository?.getAllCharacters() ?: Flowable.just(CharacterResponse())
 
-
-    private fun loadCharacters() =
-        Flowable.just(CharacterResponse(name = "John Snow"))
-
-    @SuppressLint("CheckResult")
-    fun loadData() {
-        Flowable.just(CharacterResponse())
+    fun setRepository(repository: IceAndFireRepository){
+        this.repository = repository
     }
 }
