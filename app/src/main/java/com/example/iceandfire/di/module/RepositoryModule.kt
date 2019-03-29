@@ -5,9 +5,8 @@ import com.example.iceandfire.repositories.IceAndFireRepository
 import com.example.iceandfire.repositories.IceAndFireService
 import dagger.Module
 import dagger.Provides
-import javax.inject.Singleton
 
-@Module(includes = [ServiceModule::class, AppModule::class])
+@Module
 class RepositoryModule {
 
     @Provides

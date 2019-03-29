@@ -67,12 +67,12 @@ class DetailsFragment : Fragment() {
     }
 
     fun initDagger(){
-        DaggerRepositoryComponent.builder()
+        /*DaggerRepositoryComponent.builder()
             .appModule(activity?.let { AppModule(it) })
             .netModule(NetModule())
             .serviceModule(ServiceModule())
             .repositoryModule(RepositoryModule())
             .build()
-            .inject(this)
+            .inject(this)*/
     }
 }

@@ -9,10 +9,14 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.example.iceandfire.App
 import com.example.iceandfire.R
+import com.example.iceandfire.di.component.AppComponent
 import com.example.iceandfire.di.component.DaggerAdapterComponent
+import com.example.iceandfire.di.component.DaggerRepositoryComponent
 import com.example.iceandfire.di.module.AppModule
 import com.example.iceandfire.di.module.NetModule
+import com.example.iceandfire.di.module.RepositoryModule
 import com.example.iceandfire.di.module.ServiceModule
 import com.example.iceandfire.pojo.CharacterResponse
 import com.example.iceandfire.repositories.IceAndFireRepository
@@ -35,13 +39,14 @@ class CharacterListFragment : Fragment() {
         val adapter = DaggerAdapterComponent.create().getCharacterListAdapter()
         rvCharacters.adapter = adapter
 
-        /*DaggerRepositoryComponent.builder()
-            .appModule(activity?.let { AppModule(it) })
-            .netModule(NetModule())
-            .serviceModule(ServiceModule())
-            //.repositoryModule(RepositoryModule())
+        val appComponent = App.appComponent
+        val repositoryComponent = DaggerRepositoryComponent.builder()
+            .appComponent(appComponent)
+            .repositoryModule(RepositoryModule())
             .build()
-            .inject(this)*/
+
+        repositoryComponent.inject(this)
+        //repositoryComponent.getRepository()
 
         //DaggerRepositoryComponent.create().inject(this)
 
