@@ -1,7 +1,6 @@
 package com.example.iceandfire.ui
 
 import android.arch.lifecycle.Observer
-import android.arch.lifecycle.ViewModelProvider
 import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.support.v4.app.Fragment
@@ -12,14 +11,11 @@ import android.view.View
 import android.view.ViewGroup
 import com.example.iceandfire.R
 import com.example.iceandfire.di.component.DaggerAdapterComponent
-import com.example.iceandfire.di.component.DaggerRepositoryComponent
 import com.example.iceandfire.di.module.AppModule
 import com.example.iceandfire.di.module.NetModule
-import com.example.iceandfire.di.module.RepositoryModule
 import com.example.iceandfire.di.module.ServiceModule
 import com.example.iceandfire.pojo.CharacterResponse
 import com.example.iceandfire.repositories.IceAndFireRepository
-import com.example.iceandfire.repositories.IceAndFireService
 import com.example.iceandfire.viewModel.CharacterListViewModel
 import javax.inject.Inject
 
@@ -39,17 +35,19 @@ class CharacterListFragment : Fragment() {
         val adapter = DaggerAdapterComponent.create().getCharacterListAdapter()
         rvCharacters.adapter = adapter
 
-        DaggerRepositoryComponent.builder()
+        /*DaggerRepositoryComponent.builder()
             .appModule(activity?.let { AppModule(it) })
             .netModule(NetModule())
             .serviceModule(ServiceModule())
-            .repositoryModule(RepositoryModule())
+            //.repositoryModule(RepositoryModule())
             .build()
-            .inject(this)
+            .inject(this)*/
+
+        //DaggerRepositoryComponent.create().inject(this)
 
 
         viewModel = ViewModelProviders.of(this).get(CharacterListViewModel::class.java)
-        viewModel?.setRepository(repository)
+       // viewModel?.setRepository(repository)
 
         viewModel?.charactersLiveData?.observe(this, Observer<CharacterResponse> {
             val list = mutableListOf<CharacterResponse>()
