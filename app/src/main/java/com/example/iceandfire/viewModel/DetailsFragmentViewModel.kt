@@ -1,26 +1,26 @@
 package com.example.iceandfire.viewModel
 
-import android.arch.lifecycle.LiveData
-import android.arch.lifecycle.LiveDataReactiveStreams
+import android.annotation.SuppressLint
+import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
 import com.example.iceandfire.pojo.CharacterResponse
 import com.example.iceandfire.repositories.IceAndFireRepository
-import io.reactivex.Single
+import io.reactivex.android.schedulers.AndroidSchedulers
+import javax.inject.Inject
 
-class DetailsFragmentViewModel : ViewModel() {
+class DetailsFragmentViewModel
+@Inject constructor(private val repository: IceAndFireRepository) : ViewModel() {
 
-    private var repository: IceAndFireRepository? = null
+    var specificCharacter: MutableLiveData<CharacterResponse> = MutableLiveData()
 
-    private var specificCharacterSingle: Single<CharacterResponse> = Single.just(CharacterResponse())
-
-    var specificCharacterLiveData: LiveData<CharacterResponse> =
-        LiveDataReactiveStreams.fromPublisher(specificCharacterSingle.toFlowable())
-
-
-    fun loadCharacter(num: String) =
-        repository?.getSpecificCharacter(num) ?: Single.just(CharacterResponse())
-
-    fun setRepository(repository: IceAndFireRepository){
-        this.repository = repository
+    @SuppressLint("CheckResult")
+    fun loadCharacter(num: String) {
+        repository.getSpecificCharacter(num)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({
+                    specificCharacter.value = it
+                }, {
+                    it.printStackTrace()
+                })
     }
 }

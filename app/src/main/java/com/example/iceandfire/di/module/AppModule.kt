@@ -1,14 +1,15 @@
 package com.example.iceandfire.di.module
 
 import android.content.Context
+import com.example.iceandfire.App
 import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton
 
 @Module
-class AppModule(val context: Context) {
+class AppModule(private val app: App) {
 
     @Provides
     @Singleton
-    fun provideContext(): Context = context.applicationContext
+    fun provideApp(): Context = app
 }

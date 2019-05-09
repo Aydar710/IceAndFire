@@ -24,5 +24,5 @@ abstract class ViewModelModule {
     abstract fun bindDetailsFragmentViewModel(viewModel: DetailsFragmentViewModel): DetailsFragmentViewModel
 
     @Binds
-    abstract fun bindViewModelFactory(factory: ViewModelFactory): ViewModelProvider.Factory
+    internal abstract fun bindViewModelFactory(factory: ViewModelFactory): ViewModelProvider.Factory
 }
