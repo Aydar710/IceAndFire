@@ -16,11 +16,11 @@ class DetailsFragmentViewModel
     @SuppressLint("CheckResult")
     fun loadCharacter(num: String) {
         repository.getSpecificCharacter(num)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({
-                    specificCharacter.value = it
-                }, {
-                    it.printStackTrace()
-                })
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe({
+                specificCharacter.value = it
+            }, {
+                it.printStackTrace()
+            })
     }
 }
