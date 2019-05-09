@@ -7,5 +7,6 @@ import dagger.Component
 
 @Component(modules = [AdapterModule::class])
 interface AdapterComponent {
+
     fun getCharacterListAdapter(): CharacterListAdapter
 }

@@ -9,11 +9,6 @@ import android.view.View
 import android.view.ViewGroup
 import com.example.iceandfire.ARG_CHARACTER_NUM
 import com.example.iceandfire.R
-import com.example.iceandfire.di.component.DaggerRepositoryComponent
-import com.example.iceandfire.di.module.AppModule
-import com.example.iceandfire.di.module.NetModule
-import com.example.iceandfire.di.module.RepositoryModule
-import com.example.iceandfire.di.module.ServiceModule
 import com.example.iceandfire.pojo.CharacterResponse
 import com.example.iceandfire.repositories.IceAndFireRepository
 import com.example.iceandfire.viewModel.DetailsFragmentViewModel

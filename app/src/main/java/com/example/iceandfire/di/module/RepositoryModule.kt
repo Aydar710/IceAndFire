@@ -1,16 +1,16 @@
 package com.example.iceandfire.di.module
 
-import com.example.iceandfire.di.scope.RepoScope
 import com.example.iceandfire.repositories.IceAndFireRepository
 import com.example.iceandfire.repositories.IceAndFireService
 import dagger.Module
 import dagger.Provides
+import javax.inject.Singleton
 
 @Module
 class RepositoryModule {
 
     @Provides
-    @RepoScope
+    @Singleton
     fun provideIceAndFireRepository(iceAndFireService: IceAndFireService): IceAndFireRepository =
         IceAndFireRepository(iceAndFireService)
 }
