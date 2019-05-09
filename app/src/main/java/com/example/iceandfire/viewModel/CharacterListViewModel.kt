@@ -16,12 +16,12 @@ class CharacterListViewModel
     @SuppressLint("CheckResult")
     fun loadCharacters() {
         repository.getAllCharacters()
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({
-                    characterList.value = mutableListOf(it)
-                }, {
-                    it.printStackTrace()
-                })
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe({
+                characterList.value = mutableListOf(it)
+            }, {
+                it.printStackTrace()
+            })
     }
 }
 
