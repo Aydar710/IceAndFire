@@ -5,7 +5,7 @@ import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
 import com.example.iceandfire.pojo.CharacterResponse
 import com.example.iceandfire.repositories.IceAndFireRepository
-import io.reactivex.android.schedulers.AndroidSchedulers
+import kotlinx.coroutines.*
 import javax.inject.Inject
 
 class DetailsFragmentViewModel
@@ -13,14 +13,24 @@ class DetailsFragmentViewModel
 
     var specificCharacter: MutableLiveData<CharacterResponse> = MutableLiveData()
 
+    private var getSpecificCharacterJob: Job? = null
+
     @SuppressLint("CheckResult")
     fun loadCharacter(num: String) {
-        repository.getSpecificCharacter(num)
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe({
-                specificCharacter.value = it
-            }, {
-                it.printStackTrace()
-            })
+        getSpecificCharacterJob = CoroutineScope(Dispatchers.IO).launch {
+            try {
+                val character = repository.getSpecificCharacter(num)
+                withContext(Dispatchers.Main) {
+                    specificCharacter.value = character
+                }
+            } catch (e: IllegalStateException) {
+                e.printStackTrace()
+            }
+        }
+    }
+
+    override fun onCleared() {
+        getSpecificCharacterJob?.cancel()
+        super.onCleared()
     }
 }

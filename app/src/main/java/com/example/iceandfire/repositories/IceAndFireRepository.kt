@@ -1,15 +1,18 @@
 package com.example.iceandfire.repositories
 
 import com.example.iceandfire.pojo.CharacterResponse
-import io.reactivex.Single
 import javax.inject.Inject
 
 class IceAndFireRepository
 @Inject constructor(val service: IceAndFireService) {
 
-    fun getAllCharacters(): Single<CharacterResponse> =
-        service.getAllCharacters()
+    suspend fun getAllCharacters(): List<CharacterResponse> {
+        val result = service.getAllCharacters().await()
+        return mutableListOf(result)
+    }
 
-    fun getSpecificCharacter(num: String): Single<CharacterResponse> =
-        service.getSpecificCharacter(num)
+    suspend fun getSpecificCharacter(num: String): CharacterResponse {
+        val result = service.getSpecificCharacter(num).await()
+        return result
+    }
 }
