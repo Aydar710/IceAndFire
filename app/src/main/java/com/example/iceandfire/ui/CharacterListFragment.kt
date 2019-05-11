@@ -1,61 +1,48 @@
 package com.example.iceandfire.ui
 
 import android.arch.lifecycle.Observer
+import android.arch.lifecycle.ViewModelProvider
 import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.support.v4.app.Fragment
-import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.example.iceandfire.App
+import com.example.iceandfire.CharacterListAdapter
 import com.example.iceandfire.R
-import com.example.iceandfire.di.component.DaggerAdapterComponent
-import com.example.iceandfire.di.module.AppModule
-import com.example.iceandfire.di.module.NetModule
-import com.example.iceandfire.di.module.ServiceModule
 import com.example.iceandfire.pojo.CharacterResponse
-import com.example.iceandfire.repositories.IceAndFireRepository
 import com.example.iceandfire.viewModel.CharacterListViewModel
+import kotlinx.android.synthetic.main.fragment_list.view.*
 import javax.inject.Inject
 
 class CharacterListFragment : Fragment() {
 
-    private var viewModel: CharacterListViewModel? = null
-
     @Inject
-    lateinit var repository : IceAndFireRepository
+    lateinit var viewModelFactory: ViewModelProvider.Factory
+
+    lateinit var characterListViewModel: CharacterListViewModel
+
+    lateinit var adapter: CharacterListAdapter
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val view = inflater.inflate(R.layout.fragment_list, container, false)
-        val rvCharacters = view.findViewById<RecyclerView>(R.id.recycler_characters)
-        val manager = LinearLayoutManager(activity)
-        rvCharacters.layoutManager = manager
+        App.component.inject(this)
 
-        val adapter = DaggerAdapterComponent.create().getCharacterListAdapter()
+        val view = inflater.inflate(R.layout.fragment_list, container, false)
+        val rvCharacters = view.recycler_characters
+
+        adapter = CharacterListAdapter()
         rvCharacters.adapter = adapter
 
-        /*DaggerRepositoryComponent.builder()
-            .appModule(activity?.let { AppModule(it) })
-            .netModule(NetModule())
-            .serviceModule(ServiceModule())
-            //.repositoryModule(RepositoryModule())
-            .build()
-            .inject(this)*/
-
-        //DaggerRepositoryComponent.create().inject(this)
+        characterListViewModel = ViewModelProviders
+                .of(this, viewModelFactory)[CharacterListViewModel::class.java]
 
 
-        viewModel = ViewModelProviders.of(this).get(CharacterListViewModel::class.java)
-       // viewModel?.setRepository(repository)
-
-        viewModel?.charactersLiveData?.observe(this, Observer<CharacterResponse> {
-            val list = mutableListOf<CharacterResponse>()
-            it?.let { character ->
-                list.add(character)
-            }
-            adapter.submitList(list)
+        characterListViewModel.characterList.observe(this, Observer<List<CharacterResponse>> {
+            adapter.submitList(it)
         })
+
+        characterListViewModel.loadCharacters()
         return view
     }
 }

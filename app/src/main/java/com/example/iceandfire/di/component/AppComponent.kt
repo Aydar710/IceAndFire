@@ -1,15 +1,25 @@
 package com.example.iceandfire.di.component
 
 import android.content.Context
-import com.example.iceandfire.di.module.AppModule
-import com.example.iceandfire.di.module.NetModule
-import com.example.iceandfire.di.module.ServiceModule
+import com.example.iceandfire.di.module.*
+import com.example.iceandfire.ui.CharacterListFragment
 import dagger.Component
 import javax.inject.Singleton
 
-@Component(modules = [AppModule::class, NetModule::class, ServiceModule::class])
 @Singleton
+@Component(
+    modules = [
+        AppModule::class,
+        NetModule::class,
+        ServiceModule::class,
+        RepositoryModule::class,
+        ViewModelModule::class
+    ]
+)
 interface AppComponent {
 
-    fun provideContext() : Context
+    fun provideApp(): Context
+
+
+    fun inject(characterListFragment: CharacterListFragment)
 }
